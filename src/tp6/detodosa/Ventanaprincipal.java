@@ -32,8 +32,12 @@ public class Ventanaprincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu3 = new javax.swing.JMenu();
+        jMGestionproductos = new javax.swing.JMenu();
+        jMnGestionprod = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMnConsulnom = new javax.swing.JMenuItem();
+        jMnConsulprecio = new javax.swing.JMenuItem();
+        jMnConsulrubro = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -52,10 +56,28 @@ public class Ventanaprincipal extends javax.swing.JFrame {
             .addGap(0, 474, Short.MAX_VALUE)
         );
 
-        jMenu3.setText("Administracion");
-        jMenuBar1.add(jMenu3);
+        jMGestionproductos.setText("Administracion");
+        jMGestionproductos.addActionListener(this::jMGestionproductosActionPerformed);
+
+        jMnGestionprod.setText("Gestión de Productos");
+        jMGestionproductos.add(jMnGestionprod);
+
+        jMenuBar1.add(jMGestionproductos);
 
         jMenu4.setText("Consultas");
+
+        jMnConsulnom.setText("Consulta por Nombre");
+        jMnConsulnom.addActionListener(this::jMnConsulnomActionPerformed);
+        jMenu4.add(jMnConsulnom);
+
+        jMnConsulprecio.setText("Consulta por Precio");
+        jMnConsulprecio.addActionListener(this::jMnConsulprecioActionPerformed);
+        jMenu4.add(jMnConsulprecio);
+
+        jMnConsulrubro.setText("Consulta por Rubro");
+        jMnConsulrubro.addActionListener(this::jMnConsulrubroActionPerformed);
+        jMenu4.add(jMnConsulrubro);
+
         jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
@@ -73,6 +95,22 @@ public class Ventanaprincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMGestionproductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMGestionproductosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMGestionproductosActionPerformed
+
+    private void jMnConsulnomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnConsulnomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMnConsulnomActionPerformed
+
+    private void jMnConsulprecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnConsulprecioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMnConsulprecioActionPerformed
+
+    private void jMnConsulrubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnConsulrubroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMnConsulrubroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -101,10 +139,14 @@ public class Ventanaprincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMGestionproductos;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMnConsulnom;
+    private javax.swing.JMenuItem jMnConsulprecio;
+    private javax.swing.JMenuItem jMnConsulrubro;
+    private javax.swing.JMenuItem jMnGestionprod;
     // End of variables declaration//GEN-END:variables
 }
