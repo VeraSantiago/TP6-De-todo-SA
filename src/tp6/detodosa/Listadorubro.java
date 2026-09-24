@@ -72,7 +72,7 @@ public class Listadorubro extends javax.swing.JInternalFrame {
                                 .addGap(29, 29, 29)
                                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(135, 135, 135)
+                        .addGap(152, 152, 152)
                         .addComponent(jLabel1)))
                 .addContainerGap(58, Short.MAX_VALUE))
         );
