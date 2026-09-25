@@ -33,14 +33,15 @@ public class Ventanaprincipal extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu5 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMnGestion = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jmenuNom = new javax.swing.JCheckBoxMenuItem();
-        jmenuPrecio = new javax.swing.JCheckBoxMenuItem();
-        jmenuRubro = new javax.swing.JCheckBoxMenuItem();
+        jMnNombre = new javax.swing.JMenuItem();
+        jMnPrecio = new javax.swing.JMenuItem();
+        jMnRubro = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -49,6 +50,8 @@ public class Ventanaprincipal extends javax.swing.JFrame {
         jMenu4.setText("jMenu4");
 
         jMenuItem1.setText("jMenuItem1");
+
+        jMenuItem4.setText("jMenuItem4");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,29 +68,26 @@ public class Ventanaprincipal extends javax.swing.JFrame {
 
         jMenu5.setText("Administración");
 
-        jMenuItem2.setText("Gestión de Productos");
-        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
-        jMenu5.add(jMenuItem2);
+        jMnGestion.setText("Gestión de Productos");
+        jMnGestion.addActionListener(this::jMnGestionActionPerformed);
+        jMenu5.add(jMnGestion);
 
         jMenuBar1.add(jMenu5);
 
         jMenu3.setText("Consultas");
         jMenu3.addActionListener(this::jMenu3ActionPerformed);
 
-        jmenuNom.setSelected(true);
-        jmenuNom.setText("Consultas por Nombre");
-        jmenuNom.addActionListener(this::jmenuNomActionPerformed);
-        jMenu3.add(jmenuNom);
+        jMnNombre.setText("Por Nombre");
+        jMnNombre.addActionListener(this::jMnNombreActionPerformed);
+        jMenu3.add(jMnNombre);
 
-        jmenuPrecio.setSelected(true);
-        jmenuPrecio.setText("Consultas por Precio");
-        jmenuPrecio.addActionListener(this::jmenuPrecioActionPerformed);
-        jMenu3.add(jmenuPrecio);
+        jMnPrecio.setText("Por Precio");
+        jMnPrecio.addActionListener(this::jMnPrecioActionPerformed);
+        jMenu3.add(jMnPrecio);
 
-        jmenuRubro.setSelected(true);
-        jmenuRubro.setText("Consultas por Rubro");
-        jmenuRubro.addActionListener(this::jmenuRubroActionPerformed);
-        jMenu3.add(jmenuRubro);
+        jMnRubro.setText("Por Rubro");
+        jMnRubro.addActionListener(this::jMnRubroActionPerformed);
+        jMenu3.add(jMnRubro);
 
         jMenuBar1.add(jMenu3);
 
@@ -107,46 +107,45 @@ public class Ventanaprincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jmenuNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuNomActionPerformed
-        // TODO add your handling code here:
-        jDesktopPane1.removeAll();
-        jDesktopPane1.repaint();
-        Listadonombre nombre = new Listadonombre();
-        nombre.setVisible(true);
-        jDesktopPane1.add(nombre);
-    }//GEN-LAST:event_jmenuNomActionPerformed
-
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu3ActionPerformed
 
-    private void jmenuPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuPrecioActionPerformed
-        // TODO add your handling code here:
-        jDesktopPane1.removeAll();
-        jDesktopPane1.repaint();
-        Listadoprecio precio = new Listadoprecio();
-        precio.setVisible(true);
-        jDesktopPane1.add(precio);
-        
-    }//GEN-LAST:event_jmenuPrecioActionPerformed
-
-    private void jmenuRubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuRubroActionPerformed
-        // TODO add your handling code here:
-        jDesktopPane1.removeAll();
-        jDesktopPane1.repaint();
-        Listadorubro rubro = new Listadorubro();
-        rubro.setVisible(true);
-        jDesktopPane1.add(rubro);
-    }//GEN-LAST:event_jmenuRubroActionPerformed
-
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void jMnGestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnGestionActionPerformed
         // TODO add your handling code here:
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
         Gestion ventanagestion = new Gestion();
         ventanagestion.setVisible(true);
         jDesktopPane1.add(ventanagestion);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_jMnGestionActionPerformed
+
+    private void jMnNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnNombreActionPerformed
+        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        Listadonombre nombre = new Listadonombre();
+        nombre.setVisible(true);
+        jDesktopPane1.add(nombre);
+    }//GEN-LAST:event_jMnNombreActionPerformed
+
+    private void jMnPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnPrecioActionPerformed
+        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        Listadoprecio precio = new Listadoprecio();
+        precio.setVisible(true);
+        jDesktopPane1.add(precio);
+    }//GEN-LAST:event_jMnPrecioActionPerformed
+
+    private void jMnRubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnRubroActionPerformed
+        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        Listadorubro rubro = new Listadorubro();
+        rubro.setVisible(true);
+        jDesktopPane1.add(rubro);
+    }//GEN-LAST:event_jMnRubroActionPerformed
 
     /**
      * @param args the command line arguments
@@ -182,9 +181,10 @@ public class Ventanaprincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JCheckBoxMenuItem jmenuNom;
-    private javax.swing.JCheckBoxMenuItem jmenuPrecio;
-    private javax.swing.JCheckBoxMenuItem jmenuRubro;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMnGestion;
+    private javax.swing.JMenuItem jMnNombre;
+    private javax.swing.JMenuItem jMnPrecio;
+    private javax.swing.JMenuItem jMnRubro;
     // End of variables declaration//GEN-END:variables
 }
