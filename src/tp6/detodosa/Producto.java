@@ -4,6 +4,8 @@
  */
 package tp6.detodosa;
 
+import java.util.Objects;
+
 /**
  *
  * @author NoxiePC
@@ -65,16 +67,20 @@ public class Producto implements Comparable<Producto>{
 
     @Override
     public int compareTo(Producto p) {
-        if(codigo == p.codigo){
-            return 0;
-        }else if(codigo > p.codigo){
-            
-            return 1;
-        }else{
-            
-            return -1;
-        }
+        return Integer.compare(this.codigo, p.getCodigo());
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Producto producto = (Producto) obj;
+        return codigo == producto.codigo;
+    }
+    
+    @Override
+    public int hashCode(){
+        return Objects.hash(codigo);
+    }
     
 }

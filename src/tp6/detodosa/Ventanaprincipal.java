@@ -4,6 +4,8 @@
  */
 package tp6.detodosa;
 
+import java.util.TreeSet;
+
 /**
  *
  * @author NoxiePC
@@ -12,9 +14,8 @@ public class Ventanaprincipal extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Ventanaprincipal.class.getName());
 
-    /**
-     * Creates new form Ventanaprincipal
-     */
+    public static TreeSet<Producto> listaProductos = new TreeSet<>();
+    
     public Ventanaprincipal() {
         initComponents();
         this.setLocationRelativeTo(null);

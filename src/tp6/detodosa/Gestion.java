@@ -4,17 +4,47 @@
  */
 package tp6.detodosa;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author NoxiePC
  */
 public class Gestion extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Gestion
-     */
+    private DefaultTableModel modelo = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column){
+            return false;
+        }
+    };
+    
     public Gestion() {
         initComponents();
+        armarCabecera();
+        cargarTabla();
+    }
+    
+    private void armarCabecera(){
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Categoria");
+        modelo.addColumn("Stock");
+        jTProductos.setModel(modelo);
+    }
+    
+    private void cargarTabla(){
+        modelo.setRowCount(0);
+        for (Producto p : Ventanaprincipal.listaProductos){
+            modelo.addRow(new Object[]{
+                p.getCodigo(),
+                p.getDescripcion(),
+                p.getPrecio(),
+                p.getRubro(),
+                p.getStock()
+            });
+        }
     }
 
     /**
