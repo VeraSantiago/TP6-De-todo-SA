@@ -4,17 +4,25 @@
  */
 package tp6.detodosa;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author NoxiePC
  */
 public class Listadorubro extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form Listadorubro
-     */
+    private DefaultTableModel modelo = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column){
+            return false;
+        }
+    };
+    
     public Listadorubro() {
         initComponents();
+        armarCabecera();
+        cargarCombo();
     }
 
     /**
@@ -27,16 +35,16 @@ public class Listadorubro extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTProductos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jCbRubro = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -47,7 +55,7 @@ public class Listadorubro extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTProductos);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("Listado por Rubro");
@@ -55,7 +63,8 @@ public class Listadorubro extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Rubro:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbRubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbRubro.addActionListener(this::jCbRubroActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -70,7 +79,7 @@ public class Listadorubro extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jCbRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(152, 152, 152)
                         .addComponent(jLabel1)))
@@ -84,7 +93,7 @@ public class Listadorubro extends javax.swing.JInternalFrame {
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jCbRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
@@ -93,12 +102,64 @@ public class Listadorubro extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jCbRubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbRubroActionPerformed
+        filtrarPorRubro();
+    }//GEN-LAST:event_jCbRubroActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<Object> jCbRubro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTProductos;
     // End of variables declaration//GEN-END:variables
+
+    private void armarCabecera(){
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Categoria");
+        modelo.addColumn("Stock");
+        jTProductos.setModel(modelo);
+    }
+    
+    private void borrarFilas(){
+        int filas = jTProductos.getRowCount()-1;
+        for(int f=filas; f>= 0; f--){
+            modelo.removeRow(f);
+        }
+    }
+    
+    private void cargarCombo(){
+        jCbRubro.removeAllItems();
+        
+        jCbRubro.addItem("Seleccione un rubro");
+        
+        for (Categoria c : Categoria.values()){
+            jCbRubro.addItem(c);
+        }
+    }
+    
+    private void filtrarPorRubro(){
+        borrarFilas();
+        
+        Object seleccionado = jCbRubro.getSelectedItem();
+        
+        if (seleccionado instanceof Categoria){
+            Categoria rubroSeleccionado = (Categoria) seleccionado;
+            
+            for (Producto p : Ventanaprincipal.listaProductos){
+                if(p.getRubro() == rubroSeleccionado){
+                    modelo.addRow(new Object[]{
+                        p.getCodigo(),
+                        p.getDescripcion(),
+                        p.getPrecio(),
+                        p.getRubro(),
+                        p.getStock()
+                    });
+                }
+            }
+        }
+    }
 }
