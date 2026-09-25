@@ -4,6 +4,7 @@
  */
 package tp6.detodosa;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,6 +46,16 @@ public class Gestion extends javax.swing.JInternalFrame {
                 p.getStock()
             });
         }
+    }
+    
+    private void validarCampos(){
+        boolean hayCodigo = !txtCodigo.getText().trim().isEmpty();
+        boolean hayDescripcion = !txtDescripcion.getText().trim().isEmpty();
+        boolean hayPrecio = !txtPrecio.getText().trim().isEmpty();
+        boolean hayRubro = jCbRubro.getSelectedIndex() != -1 && jCbRubro.getSelectedItem() != "Seleccione un rubro";
+        boolean hayStock = (int) jSpStock.getValue() > 0;
+        
+        btnGuardar.setEnabled(hayCodigo && hayDescripcion && hayPrecio && hayRubro && hayStock);
     }
 
     /**
@@ -118,7 +129,28 @@ public class Gestion extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Stock:");
 
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyReleased(evt);
+            }
+        });
+
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyReleased(evt);
+            }
+        });
+
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyReleased(evt);
+            }
+        });
+
         jCbRubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un rubro", "Perfumeria", "Limpieza", "Comestible" }));
+        jCbRubro.addActionListener(this::jCbRubroActionPerformed);
+
+        jSpStock.addChangeListener(this::jSpStockStateChanged);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -180,10 +212,13 @@ public class Gestion extends javax.swing.JInternalFrame {
         btnNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/nuevo.png"))); // NOI18N
         btnNuevo.setText("Nuevo");
         btnNuevo.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
         getContentPane().add(btnNuevo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 530, 106, 40));
 
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.setEnabled(false);
+        btnGuardar.addActionListener(this::btnGuardarActionPerformed);
         getContentPane().add(btnGuardar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 530, 113, 40));
 
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/actualizar.png"))); // NOI18N
@@ -201,6 +236,69 @@ public class Gestion extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCerrarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+        txtPrecio.setText("");
+        jSpStock.setValue(0);
+        
+        if (jCbRubro.getItemCount() > 0){
+            jCbRubro.setSelectedIndex(0);
+        }
+        
+        btnGuardar.setEnabled(false);
+        
+        txtCodigo.requestFocus();
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {
+            String rubroTexto = jCbRubro.getSelectedItem().toString().toUpperCase();
+            
+            int codigo = Integer.parseInt(txtCodigo.getText().trim());
+            String descripcion = txtDescripcion.getText().trim();
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            Categoria rubro = Categoria.valueOf(rubroTexto);
+            int stock = Integer.parseInt(jSpStock.getValue().toString());
+            
+            if (descripcion.isEmpty()){
+                JOptionPane.showMessageDialog(this, "El campo 'descripcion' no puede estar vacio");
+                return;
+            }
+            
+            Producto producto = new Producto(codigo, descripcion, precio, stock, rubro);
+            
+            if (Ventanaprincipal.listaProductos.add(producto)){
+                JOptionPane.showMessageDialog(this, "El producto " + producto.getDescripcion() + " ha sido cargado con exito");
+                cargarTabla();
+            } else {
+                JOptionPane.showMessageDialog(this, "Ya existe un producto con el codigo " + producto.getCodigo());
+            }
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese numeros validos en los campos codigo y precio");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void txtCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyReleased
+        validarCampos();
+    }//GEN-LAST:event_txtCodigoKeyReleased
+
+    private void txtDescripcionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyReleased
+        validarCampos();
+    }//GEN-LAST:event_txtDescripcionKeyReleased
+
+    private void txtPrecioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyReleased
+        validarCampos();
+    }//GEN-LAST:event_txtPrecioKeyReleased
+
+    private void jCbRubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbRubroActionPerformed
+        validarCampos();
+    }//GEN-LAST:event_jCbRubroActionPerformed
+
+    private void jSpStockStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpStockStateChanged
+        validarCampos();
+    }//GEN-LAST:event_jSpStockStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
