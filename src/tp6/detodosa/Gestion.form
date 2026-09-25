@@ -93,6 +93,9 @@
               </Table>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTProductosMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -208,9 +211,9 @@
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="4">
                 <StringItem index="0" value="Seleccione un rubro"/>
-                <StringItem index="1" value="Perfumeria"/>
-                <StringItem index="2" value="Limpieza"/>
-                <StringItem index="3" value="Comestible"/>
+                <StringItem index="1" value="PERFUMERIA"/>
+                <StringItem index="2" value="LIMPIEZA"/>
+                <StringItem index="3" value="COMESTIBLE"/>
               </StringArray>
             </Property>
           </Properties>
@@ -296,6 +299,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Actualizar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="290" y="530" width="123" height="40"/>
@@ -308,7 +314,11 @@
           <Image iconType="3" name="/image/eliminar.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Eliminar"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarActionPerformed"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="440" y="530" width="114" height="40"/>

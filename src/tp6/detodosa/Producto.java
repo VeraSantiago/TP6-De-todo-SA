@@ -80,7 +80,7 @@ public class Producto implements Comparable<Producto>{
     
     @Override
     public int hashCode(){
-        return Objects.hash(codigo);
+        return Integer.hashCode(codigo);
     }
     
 }

@@ -115,6 +115,11 @@ public class Gestion extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTProductos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 89, 521, 128));
@@ -147,7 +152,7 @@ public class Gestion extends javax.swing.JInternalFrame {
             }
         });
 
-        jCbRubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un rubro", "Perfumeria", "Limpieza", "Comestible" }));
+        jCbRubro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione un rubro", "PERFUMERIA", "LIMPIEZA", "COMESTIBLE" }));
         jCbRubro.addActionListener(this::jCbRubroActionPerformed);
 
         jSpStock.addChangeListener(this::jSpStockStateChanged);
@@ -223,10 +228,13 @@ public class Gestion extends javax.swing.JInternalFrame {
 
         btnActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/actualizar.png"))); // NOI18N
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
         getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 530, 123, 40));
 
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/eliminar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
         getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 530, 114, 40));
 
         pack();
@@ -248,7 +256,7 @@ public class Gestion extends javax.swing.JInternalFrame {
         }
         
         btnGuardar.setEnabled(false);
-        
+        txtCodigo.setEnabled(true);
         txtCodigo.requestFocus();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
@@ -278,6 +286,8 @@ public class Gestion extends javax.swing.JInternalFrame {
         } catch (NumberFormatException e){
             JOptionPane.showMessageDialog(this, "Por favor, ingrese numeros validos en los campos codigo y precio");
         }
+        
+        btnNuevoActionPerformed(evt);
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void txtCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyReleased
@@ -299,6 +309,118 @@ public class Gestion extends javax.swing.JInternalFrame {
     private void jSpStockStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpStockStateChanged
         validarCampos();
     }//GEN-LAST:event_jSpStockStateChanged
+
+    private void jTProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTProductosMouseClicked
+        int filaS = jTProductos.getSelectedRow();
+        
+        if (filaS != -1){
+            txtCodigo.setText(jTProductos.getValueAt(filaS, 0).toString());
+            txtDescripcion.setText(jTProductos.getValueAt(filaS, 1).toString());
+            txtPrecio.setText(jTProductos.getValueAt(filaS, 2).toString());
+            
+            String rubroTexto = jTProductos.getValueAt(filaS, 3).toString().toUpperCase();
+            
+            jCbRubro.setSelectedItem(rubroTexto);
+            jSpStock.setValue(Integer.parseInt(jTProductos.getValueAt(filaS, 4).toString()));
+        }
+        
+        txtCodigo.setEnabled(false);
+        btnEliminar.setEnabled(true);
+    }//GEN-LAST:event_jTProductosMouseClicked
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        int filaS = jTProductos.getSelectedRow();
+        
+        if (filaS == -1){
+            JOptionPane.showMessageDialog(this, "Debe selecionar un producto");
+            return;
+        }
+        
+        try {
+            if (jCbRubro.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un rubro válido.");
+                return;
+            }
+            
+            String rubroTexto = jCbRubro.getSelectedItem().toString().toUpperCase();
+            
+            int codigo = Integer.parseInt(txtCodigo.getText().trim());
+            String descripcion = txtDescripcion.getText().trim();
+            double precio = Double.parseDouble(txtPrecio.getText().trim());
+            Categoria rubro = Categoria.valueOf(rubroTexto);
+            int stock = Integer.parseInt(jSpStock.getValue().toString());
+            
+            if (descripcion.isEmpty()){
+                JOptionPane.showMessageDialog(this, "El campo 'descripcion' no puede estar vacio");
+                return;
+            }
+                        
+            Producto productoExiste = null;
+            for (Producto p : Ventanaprincipal.listaProductos){
+                if (p.getCodigo() == codigo){
+                    productoExiste = p;
+                    break;
+                }
+            }
+            
+            if (productoExiste != null){
+                Ventanaprincipal.listaProductos.remove(productoExiste);
+                
+                Producto actualizado = new Producto(codigo, descripcion, precio, stock, rubro);
+                
+                Ventanaprincipal.listaProductos.add(actualizado);
+                
+                JOptionPane.showMessageDialog(this, "Producto actualizado con exito");
+                
+                cargarTabla();
+                btnNuevoActionPerformed(evt);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontro ningun producto con el codigo " + codigo);
+            }
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese numeros validos en los campos codigo y precio");
+        }   
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int filaS = jTProductos.getSelectedRow();
+        
+        if (filaS == -1){
+            JOptionPane.showMessageDialog(this, "Debe selecionar un producto");
+            return;
+        }
+        
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Esta seguro de querer eliminar este producto", "Confirmar", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION){
+            try {
+                int codigo = Integer.parseInt(jTProductos.getValueAt(filaS, 0).toString());
+                
+                Producto productoAEliminar = null;
+                
+                for (Producto p : Ventanaprincipal.listaProductos){
+                    if (p.getCodigo() == codigo){
+                        productoAEliminar = p;
+                        break;
+                    }
+                }
+                
+                if (productoAEliminar != null){
+                    Ventanaprincipal.listaProductos.remove(productoAEliminar);
+                    
+                    JOptionPane.showMessageDialog(this, "Producto eliminado exitosamente");
+                    
+                    cargarTabla();
+                    btnNuevoActionPerformed(evt);
+                    btnEliminar.setEnabled(false);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se encontro el producto en la lista");
+                }
+            } catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(this, "Error al leer el codigo del producto", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
