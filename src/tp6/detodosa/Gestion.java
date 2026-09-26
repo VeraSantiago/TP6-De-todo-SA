@@ -24,6 +24,7 @@ public class Gestion extends javax.swing.JInternalFrame {
         initComponents();
         armarCabecera();
         cargarTabla();
+        cargarCombo();
     }
     
     private void armarCabecera(){
@@ -56,6 +57,7 @@ public class Gestion extends javax.swing.JInternalFrame {
         boolean hayStock = (int) jSpStock.getValue() > 0;
         
         btnGuardar.setEnabled(hayCodigo && hayDescripcion && hayPrecio && hayRubro && hayStock);
+        btnBuscar.setEnabled(hayCodigo);
     }
 
     /**
@@ -102,6 +104,7 @@ public class Gestion extends javax.swing.JInternalFrame {
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 55, 139, -1));
 
         jCbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione una categoria", "Perfumeria", "Limpieza", "Comestible" }));
+        jCbCategoria.addActionListener(this::jCbCategoriaActionPerformed);
         getContentPane().add(jCbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 55, 180, -1));
 
         jTProductos.setModel(new javax.swing.table.DefaultTableModel(
@@ -208,6 +211,8 @@ public class Gestion extends javax.swing.JInternalFrame {
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 235, 453, -1));
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/buscar.png"))); // NOI18N
+        btnBuscar.setEnabled(false);
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
         getContentPane().add(btnBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(474, 274, -1, 75));
 
         btnCerrar.setText("Cerrar");
@@ -422,6 +427,53 @@ public class Gestion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void jCbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbCategoriaActionPerformed
+        filtrarPorRubro();
+    }//GEN-LAST:event_jCbCategoriaActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String codigoTexto = txtCodigo.getText().trim();
+        
+        if(codigoTexto.isEmpty()){
+            JOptionPane.showMessageDialog(this, "Ingrese un codigo para realizar la busqueda");
+            return;
+        }
+        
+        try {
+            int codigoBuscado = Integer.parseInt(codigoTexto);
+            Producto existe = null;
+            
+            for (Producto p : Ventanaprincipal.listaProductos){
+                if (p.getCodigo() == codigoBuscado){
+                    existe = p;
+                    break;
+                }
+            }
+            
+            if (existe != null){
+                modelo.setRowCount(0);
+                
+                modelo.addRow(new Object[]{
+                        existe.getCodigo(),
+                        existe.getDescripcion(),
+                        existe.getPrecio(),
+                        existe.getRubro(),
+                        existe.getStock()
+                    });
+                
+                txtDescripcion.setText(existe.getDescripcion());
+                txtPrecio.setText(String.valueOf(existe.getPrecio()));
+                jCbRubro.setSelectedItem(existe.getRubro().toString());
+                jSpStock.setValue(existe.getStock());
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontro ningun producto con este codigo");
+                cargarTabla();
+            }
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this, "El codigo ingresado debe ser un numero valido");
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
@@ -430,7 +482,7 @@ public class Gestion extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnNuevo;
-    private javax.swing.JComboBox<String> jCbCategoria;
+    private javax.swing.JComboBox<Object> jCbCategoria;
     private javax.swing.JComboBox<String> jCbRubro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -447,4 +499,55 @@ public class Gestion extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarCombo(){
+        jCbCategoria.removeAllItems();
+        
+        jCbCategoria.addItem("Seleccione un rubro");
+        
+        for (Categoria c : Categoria.values()){
+            jCbCategoria.addItem(c);
+        }
+    }
+    
+    private void borrarFilas(){
+        int filas = jTProductos.getRowCount()-1;
+        for(int f=filas; f>= 0; f--){
+            modelo.removeRow(f);
+        }
+    }
+    
+    private void filtrarPorRubro(){
+        borrarFilas();
+        
+        Object seleccionado = jCbCategoria.getSelectedItem();
+        
+        if (seleccionado instanceof Categoria){
+            Categoria rubroSeleccionado = (Categoria) seleccionado;
+            
+            for (Producto p : Ventanaprincipal.listaProductos){
+                if(p.getRubro() == rubroSeleccionado){
+                    modelo.addRow(new Object[]{
+                        p.getCodigo(),
+                        p.getDescripcion(),
+                        p.getPrecio(),
+                        p.getRubro(),
+                        p.getStock()
+                    });
+                }
+            }
+        } else {
+            for (Producto p : Ventanaprincipal.listaProductos){
+                
+                    modelo.addRow(new Object[]{
+                        p.getCodigo(),
+                        p.getDescripcion(),
+                        p.getPrecio(),
+                        p.getRubro(),
+                        p.getStock()
+                    });
+            }
+        }
+    }
+
 }
